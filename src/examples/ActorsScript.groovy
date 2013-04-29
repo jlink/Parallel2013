@@ -1,4 +1,4 @@
-package slides
+package examples
 
 import static groovyx.gpars.actor.Actors.*
 
