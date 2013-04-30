@@ -13,9 +13,9 @@ public class LatchWaiter implements Waiter {
     }
 
     @Override
-    public boolean waitUntilFinished(long timeout) {
+    public boolean waitUntilFinished(long timeoutMilliseconds) {
         try {
-            return finished.await(timeout, TimeUnit.MILLISECONDS);
+            return finished.await(timeoutMilliseconds, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             return false;
         }

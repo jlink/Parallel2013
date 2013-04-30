@@ -12,9 +12,9 @@ public class FlowWaiter implements Waiter {
         finished << true
     }
 
-    public boolean waitUntilFinished(long timeout) {
+    public boolean waitUntilFinished(long timeoutMilliseconds) {
         try {
-            return finished.getVal(timeout, TimeUnit.MILLISECONDS)
+            return finished.getVal(timeoutMilliseconds, TimeUnit.MILLISECONDS)
         } catch (InterruptedException ie) {
             return false
         }
