@@ -1,4 +1,4 @@
-package exercises.solution;
+package exercise1.solution;
 
 public interface Waiter {
     void finish();

@@ -1,4 +1,4 @@
-package exercises.solution;
+package exercise1.solution;
 
 import groovyx.gpars.dataflow.DataflowVariable;
 import org.junit.Before;
@@ -26,13 +26,14 @@ public abstract class AbstractWaiterTest {
                 waiter.finish();
             }
         }).start();
-        boolean finished = waiter.waitUntilFinished(100);
+        boolean finished = waiter.waitUntilFinished(Long.MAX_VALUE);
         assertTrue(finished);
     }
 
     @Test
     public void waitUntilFinishedWithTimeout() {
-        boolean finished = waiter.waitUntilFinished(100);
+        final int SHORT_WAIT = 100;
+        boolean finished = waiter.waitUntilFinished(SHORT_WAIT);
         assertFalse(finished);
     }
 
@@ -42,12 +43,11 @@ public abstract class AbstractWaiterTest {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                finished.leftShift(waiter.waitUntilFinished(100));
+                finished.bind(waiter.waitUntilFinished(Long.MAX_VALUE));
             }
         });
         thread.start();
         thread.interrupt();
         assertFalse(finished.get().booleanValue());
-        assertFalse(thread.isAlive());
     }
 }
