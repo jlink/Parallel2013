@@ -1,4 +1,4 @@
-package exercise1.solution
+package exercise3.solution
 
 import groovyx.gpars.dataflow.DataflowVariable
 

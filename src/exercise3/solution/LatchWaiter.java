@@ -1,4 +1,4 @@
-package exercise1.solution;
+package exercise3.solution;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
