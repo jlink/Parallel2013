@@ -4,7 +4,7 @@ import groovyx.gpars.dataflow.DataflowVariable
 
 import java.util.concurrent.TimeUnit
 
-public class FlowWaiter implements Waiter {
+public class GroovyFlowWaiter implements Waiter {
 
     private final finished = new DataflowVariable<Boolean>()
 
@@ -14,7 +14,7 @@ public class FlowWaiter implements Waiter {
 
     public boolean waitUntilFinished(long timeoutMilliseconds) {
         try {
-            return finished.getVal(timeoutMilliseconds, TimeUnit.MILLISECONDS)
+            return finished.getVal(timeoutMilliseconds, TimeUnit.MILLISECONDS) ?: false
         } catch (InterruptedException ie) {
             return false
         }
