@@ -9,7 +9,7 @@ public class FlowWaiter implements Waiter {
     private final DataflowVariable<Boolean> finished = new DataflowVariable<Boolean>();
 
     public void finish() {
-        finished.leftShift(true);
+        finished.bind(true);
     }
 
     public boolean waitUntilFinished(long timeoutMilliseconds) {
