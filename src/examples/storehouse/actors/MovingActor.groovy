@@ -5,10 +5,8 @@ import groovyx.gpars.actor.DefaultActor
 
 class MovingActor extends DefaultActor {
     void act() {
-        loop {
-            react { message ->
-                move(message.product, message.from, message.to)
-            }
+        react { message ->
+            move(message.product, message.from, message.to)
         }
     }
 
