@@ -14,13 +14,16 @@ class MovingActorTest {
     MovingActor mover
     ShelfActor shelf1
     ShelfActor shelf2
-    DataflowQueue replies = new DataflowQueue()
+    DataflowQueue replies
+    Product book
 
     @Before
     void init() {
         mover = new MovingActor().start()
         shelf1 = new ShelfActor().start()
         shelf2 = new ShelfActor().start()
+        book = new Product(type: 'book')
+        replies = new DataflowQueue()
     }
 
     @After
@@ -31,7 +34,6 @@ class MovingActorTest {
 
     @Test
     void moveSuccessful() {
-        def book = new Product(type: 'book')
         actor {
             shelf1 << new PutIn(book)
             mover << [product: book, from: shelf1, to: shelf2]
@@ -56,7 +58,6 @@ class MovingActorTest {
 
     @Test
     void moveFailsBecauseProductIsNotThere() {
-        def book = new Product(type: 'book')
         actor {
             mover << [product: book, from: shelf1, to: shelf2]
             react { answer ->
@@ -81,6 +82,27 @@ class MovingActorTest {
 
     @Test
     void moveFailsBecauseTargetShelfIsFull() {
-        assert false
+        shelf2.capacity = 0
+        actor {
+            shelf1 << new PutIn(book)
+            mover << [product: book, from: shelf1, to: shelf2]
+            react { answer ->
+                replies << answer
+            }
+        }.join()
+        assert replies.val == Result.Failure
+
+        actor {
+            shelf1 << new ListProducts()
+            shelf2 << new ListProducts()
+            loop {
+                react { answer ->
+                    replies << answer
+                }
+            }
+        }
+
+        assert replies.val == [book]
+        assert replies.val == []
     }
 }
