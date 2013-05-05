@@ -1,23 +1,21 @@
 package examples.storehouse.actors
 
 import groovyx.gpars.dataflow.DataflowQueue
-import groovyx.gpars.dataflow.DataflowVariable
-import groovyx.gpars.dataflow.stream.DataflowStream
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-
-import java.util.concurrent.TimeUnit
 
 import static groovyx.gpars.actor.Actors.actor
 
 class ShelfActorTest {
 
     ShelfActor shelf
+    DataflowQueue replies
 
     @Before
     void init() {
         shelf = new ShelfActor(capacity: 5).start()
+        replies = new DataflowQueue()
     }
 
     @After
@@ -26,30 +24,26 @@ class ShelfActorTest {
         shelf.join()
     }
 
-	@Test
-	void putInProducts() throws Exception {
+    @Test
+    void putInProducts() throws Exception {
 
         def book1 = new Product(type: 'book1')
         def book2 = new Product(type: 'book2')
-
-        def products = new DataflowVariable()
 
         actor {
             shelf << new PutIn(book1)
             shelf << new PutIn(book2)
             shelf << new ListProducts()
             react { answer ->
-                products << answer
+                replies << answer
             }
         }
 
-        assert products.val == [book1, book2]
+        assert replies.val == [book1, book2]
     }
 
     @Test
     void putInProductsOverCapacity() throws Exception {
-
-        def answers = new DataflowQueue()
 
         actor {
             shelf << new PutIn(new Product(type: 'book1'))
@@ -62,14 +56,14 @@ class ShelfActorTest {
             shelf << new ListProducts()
             loop {
                 react { answer ->
-                    answers << answer
+                    replies << answer
                 }
             }
         }
 
-        assert answers.val == new StorageError('cannot put in book6')
-        assert answers.val == new StorageError('cannot put in book7')
-        assert answers.val*.type == ['book1', 'book2', 'book3', 'book4', 'book5']
+        assert replies.val == new StorageError('cannot put in book6')
+        assert replies.val == new StorageError('cannot put in book7')
+        assert replies.val*.type == ['book1', 'book2', 'book3', 'book4', 'book5']
 
     }
 
@@ -79,8 +73,6 @@ class ShelfActorTest {
         def book1 = new Product(type: 'book1')
         def book2 = new Product(type: 'book2')
 
-        def answers = new DataflowQueue()
-
         actor {
             shelf << new PutIn(book1)
             shelf << new PutIn(book2)
@@ -88,14 +80,14 @@ class ShelfActorTest {
             shelf << new ListProducts()
             loop {
                 react { answer ->
-                    answers << answer
+                    replies << answer
                 }
             }
         }
 
-        assert answers.val == book1
-        assert answers.val == [book2]
-	}
+        assert replies.val == book1
+        assert replies.val == [book2]
+    }
 
     @Test
     void takingOutMissingProductFails() throws Exception {
@@ -118,5 +110,5 @@ class ShelfActorTest {
 
         assert answers.val == new StorageError('cannot take out book2')
         assert answers.val == [book1]
-	}
+    }
 }

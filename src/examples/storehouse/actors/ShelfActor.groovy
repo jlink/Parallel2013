@@ -5,7 +5,7 @@ import groovyx.gpars.actor.DynamicDispatchActor
 
 class ShelfActor extends DynamicDispatchActor {
 
-    int capacity
+    int capacity = 5
     private products = []
 
     void onMessage(PutIn message) {
@@ -25,7 +25,11 @@ class ShelfActor extends DynamicDispatchActor {
     }
 
     void onMessage(ListProducts message) {
-        reply(Collections.unmodifiableList(products))
+        reply(productList())
+    }
+
+    private List productList() {
+        Collections.unmodifiableList(products)
     }
 }
 
