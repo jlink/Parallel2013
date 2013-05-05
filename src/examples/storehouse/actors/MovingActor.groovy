@@ -12,6 +12,10 @@ class MovingActor extends DefaultActor {
 
     private move(product, Actor from, Actor to) {
         def takenOut = from.sendAndWait(new TakeOut(product))
+        if (takenOut instanceof StorageError) {
+            reply Result.Failure
+            return
+        }
         to.send(new PutIn(product))
         reply Result.Success
     }

@@ -43,24 +43,40 @@ class MovingActorTest {
 
         actor {
             shelf1 << new ListProducts()
-            react { answer ->
-                replies << answer
-            }
-        }.join()
-        assert replies.val == []
-
-        actor {
             shelf2 << new ListProducts()
-            react { answer ->
-                replies << answer
+            loop {
+                react { answer ->
+                    replies << answer
+                }
             }
-        }.join()
+        }
+        assert replies.val == []
         assert replies.val == [book]
     }
 
     @Test
     void moveFailsBecauseProductIsNotThere() {
-        assert false
+        def book = new Product(type: 'book')
+        actor {
+            mover << [product: book, from: shelf1, to: shelf2]
+            react { answer ->
+                replies << answer
+            }
+        }.join()
+        assert replies.val == Result.Failure
+
+        actor {
+            shelf1 << new ListProducts()
+            shelf2 << new ListProducts()
+            loop {
+                react { answer ->
+                    replies << answer
+                }
+            }
+        }
+
+        assert replies.val == []
+        assert replies.val == []
     }
 
     @Test
