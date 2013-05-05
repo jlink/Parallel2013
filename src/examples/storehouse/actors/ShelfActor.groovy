@@ -17,7 +17,11 @@ class ShelfActor extends DynamicDispatchActor {
     }
 
     void onMessage(TakeOut message) {
-        products.remove(message.product)
+        if (!products.remove(message.product)) {
+            reply(new StorageError("cannot take out $message.product.type"))
+            return
+        }
+        reply(message.product)
     }
 
     void onMessage(ListProducts message) {

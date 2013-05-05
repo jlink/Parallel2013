@@ -74,7 +74,7 @@ class ShelfActorTest {
     }
 
     @Test
-    void takeOutProducts() throws Exception {
+    void takeOutProduct() throws Exception {
 
         def book1 = new Product(type: 'book1')
         def book2 = new Product(type: 'book2')
@@ -85,33 +85,38 @@ class ShelfActorTest {
             shelf << new PutIn(book1)
             shelf << new PutIn(book2)
             shelf << new TakeOut(book1)
-            shelf << new TakeOut(new Product(type: 'ebook'))
             shelf << new ListProducts()
-            react(1000) { answer ->
-                answers << answer
+            loop {
+                react { answer ->
+                    answers << answer
+                }
             }
         }
 
+        assert answers.val == book1
         assert answers.val == [book2]
-
 	}
 
-//	@Test
-//	public void concurrent() throws Exception {
-//		final threads = []
-//		final storehouse = new Storehouse()
-//		storehouse.newShelf('a', 100)
-//
-//		100.times {
-//			threads << Thread.start {
-//				while(true) {
-//					def s = storehouse['a'].putIn(new examples.storehouse.immutable.Product('p'))
-//					if (storehouse.update('a': s))
-//						break
-//				}
-//			}
-//		}
-//		threads.each {it.join()}
-//		assert storehouse['a'].occupied == 100
-//	}
+    @Test
+    void takingOutMissingProductFails() throws Exception {
+
+        def book1 = new Product(type: 'book1')
+        def book2 = new Product(type: 'book2')
+
+        def answers = new DataflowQueue()
+
+        actor {
+            shelf << new PutIn(book1)
+            shelf << new TakeOut(book2)
+            shelf << new ListProducts()
+            loop {
+                react { answer ->
+                    answers << answer
+                }
+            }
+        }
+
+        assert answers.val == new StorageError('cannot take out book2')
+        assert answers.val == [book1]
+	}
 }
