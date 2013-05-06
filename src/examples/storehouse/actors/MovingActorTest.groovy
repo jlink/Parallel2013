@@ -5,8 +5,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-import java.util.concurrent.TimeUnit
-
 import static groovyx.gpars.actor.Actors.actor
 
 class MovingActorTest {
@@ -69,12 +67,12 @@ class MovingActorTest {
         actor {
             shelf1 << new ListProducts()
             shelf2 << new ListProducts()
-            loop {
+            loop(2) {
                 react { answer ->
                     replies << answer
                 }
             }
-        }
+        }.join()
 
         assert replies.val == []
         assert replies.val == []
@@ -95,7 +93,7 @@ class MovingActorTest {
         actor {
             shelf1 << new ListProducts()
             shelf2 << new ListProducts()
-            loop {
+            loop(2) {
                 react { answer ->
                     replies << answer
                 }

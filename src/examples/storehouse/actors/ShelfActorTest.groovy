@@ -37,7 +37,7 @@ class ShelfActorTest {
             react { answer ->
                 replies << answer
             }
-        }
+        }.join()
 
         assert replies.val == [book1, book2]
     }
@@ -46,20 +46,16 @@ class ShelfActorTest {
     void putInProductsOverCapacity() throws Exception {
 
         actor {
-            shelf << new PutIn(new Product(type: 'book1'))
-            shelf << new PutIn(new Product(type: 'book2'))
-            shelf << new PutIn(new Product(type: 'book3'))
-            shelf << new PutIn(new Product(type: 'book4'))
-            shelf << new PutIn(new Product(type: 'book5'))
-            shelf << new PutIn(new Product(type: 'book6'))
-            shelf << new PutIn(new Product(type: 'book7'))
+            ['book1', 'book2', 'book3', 'book4', 'book5', 'book6', 'book7'].each {
+                shelf << new PutIn(new Product(type: it))
+            }
             shelf << new ListProducts()
-            loop {
+            loop(3) {
                 react { answer ->
                     replies << answer
                 }
             }
-        }
+        }.join()
 
         assert replies.val == new StorageError('cannot put in book6')
         assert replies.val == new StorageError('cannot put in book7')
@@ -78,12 +74,12 @@ class ShelfActorTest {
             shelf << new PutIn(book2)
             shelf << new TakeOut(book1)
             shelf << new ListProducts()
-            loop {
+            loop(2) {
                 react { answer ->
                     replies << answer
                 }
             }
-        }
+        }.join()
 
         assert replies.val == book1
         assert replies.val == [book2]
@@ -101,12 +97,12 @@ class ShelfActorTest {
             shelf << new PutIn(book1)
             shelf << new TakeOut(book2)
             shelf << new ListProducts()
-            loop {
+            loop(2) {
                 react { answer ->
                     answers << answer
                 }
             }
-        }
+        }.join()
 
         assert answers.val == new StorageError('cannot take out book2')
         assert answers.val == [book1]
