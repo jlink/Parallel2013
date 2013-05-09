@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="test" type="ErlangUnitRunConfigurationType" factoryName="Erlang Eunit">
+    <module name="erlang" />
+    <option name="moduleAndFunction" value="test" />
+    <option name="name" value="test" />
+    <option name="params" value="" />
+    <option name="saveOutputToFile" value="false" />
+    <option name="showConsoleOnStdErr" value="false" />
+    <option name="showConsoleOnStdOut" value="false" />
+    <RunnerSettings RunnerId="ErlangRunner" />
+    <ConfigurationWrapper RunnerId="ErlangRunner" />
+    <method />
+  </configuration>
+</component>

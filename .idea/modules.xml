@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Parallel2013.iml" filepath="$PROJECT_DIR$/Parallel2013.iml" />
+      <module fileurl="file://$PROJECT_DIR$/erlang/erlang.iml" filepath="$PROJECT_DIR$/erlang/erlang.iml" />
     </modules>
   </component>
 </project>
