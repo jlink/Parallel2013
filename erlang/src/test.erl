@@ -37,8 +37,15 @@ take_out_products_test() ->
 
 shelf_in_process_test() ->
   ShelfPid = shelves:start_new_shelf(3),
-  ShelfPid ! {self(), "Quatsch"},
+  ShelfPid ! {self(), {put_in, book}},
+  receive
+    {ShelfPid, Msg} ->
+      ?assertEqual([book], Msg)
+  end,
+  ShelfPid ! {self(), {put_in, magazine}},
+  receive
+    {ShelfPid, Msg2} ->
+      ?assertEqual([magazine, book], Msg2)
+  end,
   ShelfPid ! {self(), stop}.
-%%   receive
-%%     {ShelfPid, ok} -> ok
-%%   end.
+%%   ?assert(false).

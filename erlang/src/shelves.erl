@@ -1,7 +1,7 @@
 - module(shelves).
 - export([new_shelf/1, products/1, capacity/1]).
 - export([put_in/2, take_out/2]).
-- export([start_new_shelf/1]).
+- export([start_new_shelf/1, loop/1]).
 %% - export([ call / 1 , create_shelf / 1]) .
 
 start_new_shelf(Capacity) ->
@@ -10,6 +10,10 @@ start_new_shelf(Capacity) ->
 
 loop(Shelf) ->
   receive
+    {From, {put_in, Product}} ->
+      NewShelf = put_in(Shelf, Product),
+      reply(From, products(NewShelf)),
+      loop(NewShelf);
     {From, stop} ->
       reply(From, ok);
     {From, Msg} ->
