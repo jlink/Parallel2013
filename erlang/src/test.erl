@@ -34,3 +34,11 @@ take_out_products_test() ->
   Shelf3 = shelves:take_out(Shelf2, magazine),
   Shelf3 = shelves:take_out(Shelf3, unknown),
   ?assertEqual([book], shelves:products(Shelf3)).
+
+shelf_in_process_test() ->
+  ShelfPid = shelves:start_new_shelf(3),
+  ShelfPid ! {self(), "Quatsch"},
+  ShelfPid ! {self(), stop}.
+%%   receive
+%%     {ShelfPid, ok} -> ok
+%%   end.
