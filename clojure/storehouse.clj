@@ -29,16 +29,14 @@
   (dosync
     (alter store add-shelf name (empty-shelf capacity))))
 
-(defn update-shelf [store shelf-map]
+(defn update-shelf [store shelf-name shelf]
   (dosync
-    (let [shelf-name (first (keys shelf-map))
-          shelf (shelf-map shelf-name)]
-      (alter store replace-shelf shelf-name shelf))))
+    (alter store replace-shelf shelf-name shelf)))
 
 (defn put-in-shelf [store shelf-name product]
   (dosync
     (let [changed-shelf (put-in (@store shelf-name) product)]
-      (update-shelf store {shelf-name changed-shelf}))))
+      (update-shelf store shelf-name changed-shelf))))
 
 (defn take-from-shelf [store shelf-name product]
   (dosync
@@ -46,7 +44,7 @@
           changed-shelf (take-out org-shelf product)]
       (if (= org-shelf changed-shelf)
         (throw (Exception. (str "No such product in shelf: " product)))
-        (update-shelf store {shelf-name changed-shelf})))))
+        (update-shelf store shelf-name changed-shelf)))))
 
 (defn move [store product from-name to-name]
   (dosync
