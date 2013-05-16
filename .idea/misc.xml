@@ -3,6 +3,11 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
+  <component name="ExportToHTMLSettings">
+    <option name="printScope" value="2" />
+    <option name="OPEN_IN_BROWSER" value="true" />
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Desktop" />
+  </component>
   <component name="IdProvider" IDEtalkID="F66DD7CDE84CE6674B0F3CDE80E98D27" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
