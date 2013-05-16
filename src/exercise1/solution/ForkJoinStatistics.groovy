@@ -2,6 +2,8 @@ package exercise1.solution
 
 import groovyx.gpars.GParsPool
 
+import java.math.RoundingMode
+
 def dataDir = new File('data')
 
 GParsPool.withPool {
@@ -23,7 +25,7 @@ GParsPool.withPool {
 
     def average = sum / count
     println average
-    assert average == 9.45
 
+    assert average.setScale(2, RoundingMode.DOWN) == 5.46
 }
 

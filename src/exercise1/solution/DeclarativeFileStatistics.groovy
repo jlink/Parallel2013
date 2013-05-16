@@ -1,5 +1,7 @@
 package exercise1.solution
 
+import java.math.RoundingMode
+
 def dataDir = new File('data')
 
 def relevantFiles = dataDir.listFiles().findAll {file ->
@@ -19,4 +21,5 @@ def count = counts.sum()
 
 def average = sum / count
 println average
-assert average == 9.45
+
+assert average.setScale(2, RoundingMode.DOWN) == 5.46
