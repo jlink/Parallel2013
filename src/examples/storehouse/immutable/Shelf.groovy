@@ -10,7 +10,7 @@ class Shelf {
 	Shelf putIn(Product product) {
 		if (isFull())
 			throw new StorageException("shelf is full.")
-		return cloneWith(products: new ArrayList(products) << product)
+		return cloneWith(products: products + product)
 	}
 
 	private Shelf cloneWith(changes) {
@@ -30,7 +30,7 @@ class Shelf {
 	Shelf takeOut(Product product) {
 		if (!products.contains(product))
 			return this
-		return cloneWith(products: new ArrayList(products).minus(product))
+		return cloneWith(products: products - product)
 	}
 
 	int getOccupied() {
