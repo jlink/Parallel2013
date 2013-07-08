@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jsr166y-1.7.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-23/filestore/org.codehaus.jsr166-mirror/jsr166y/1.7.0/jar/8547fcb1c29b4f8c745c3f49a536aca58fc30f54/jsr166y-1.7.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-23/filestore/org.codehaus.jsr166-mirror/jsr166y/1.7.0/source/eed19da111cd283e375501a88b2b082c0e494187/jsr166y-1.7.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
