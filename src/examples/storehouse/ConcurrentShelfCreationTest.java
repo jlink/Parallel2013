@@ -25,6 +25,13 @@ public class ConcurrentShelfCreationTest extends ParallelTestCase {
 			}
 		};
 		runInParallelThreads(numberOfShelves, createShelfTask);
-		// assertAllShelvesHaveBeenCreated(numberOfShelves);
+		assertAllShelvesHaveBeenCreated(numberOfShelves);
 	}
+
+    private void assertAllShelvesHaveBeenCreated(int numberOfShelves) {
+        for(int i = 1; i <= numberOfShelves; i++) {
+            String shelfName = "n" + i;
+            assertNotNull("Shelf " + shelfName + " does not exist.", store.getShelf(shelfName));
+        }
+    }
 }
