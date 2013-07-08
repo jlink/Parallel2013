@@ -1,0 +1,28 @@
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    groovy('org.codehaus.groovy:groovy-all:2.1.5')
+    compile 'org.codehaus.gpars:gpars:1.0.0'
+    compile('junit:junit-dep:4.11')
+}
+
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src']
+        }
+    }
+
+    test {
+        groovy {
+            srcDirs = ['src']
+//            exclude '**/compiler/*'
+        }
+    }
+}
+
